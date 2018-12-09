@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app import app, db
-from app.models import User, Submission
+from app.models import User, Submission, categories
 from app.forms import LoginForm, SubmissionForm
 
 
@@ -21,9 +21,10 @@ def index():
             return redirect(url_for('index'))
 
     queued_submissions = current_user.ungraded_submissions().all()
-    graded_submissions = current_user.graded_submissions().all()
 
-    return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, graded_submissions=graded_submissions)
+    results = [current_user.best_submission(category) for category in categories]
+
+    return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, results=results)
 
 
 @app.route('/submit', methods=['GET', 'POST'])

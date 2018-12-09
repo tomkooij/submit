@@ -10,7 +10,7 @@
     {% endfor %}
     ---
     <h3>Results</h3>
-    {% for sub in graded_submissions %}
-    <div><p>{{ sub.submission_filename }} {{ sub.comment|string }} {{sub.timestamp}}</p></div>
+    {% for result in results %}
+      <div><p>{{ result.category }} {{ result.score }} {{result.timestamp}}</p></div>
     {% endfor %}
 {% endblock %}

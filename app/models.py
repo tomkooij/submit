@@ -5,6 +5,8 @@ from flask_login import UserMixin
 
 from app import db, login
 
+# this could be a table...
+categories = ['hello', 'piramide', 'greedy']
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +26,9 @@ class User(UserMixin, db.Model):
     def graded_submissions(self):
         return Submission.query.filter_by(user_id=self.id, is_graded=True).order_by(Submission.timestamp.desc())
 
+    def best_submission(self, category):
+        return Submission.query.filter_by(user_id=self.id, category=category).order_by(Submission.score.desc()).first()
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -33,16 +38,18 @@ class Submission(db.Model):
     submission_filename = db.Column(db.String, default=None, nullable=True)
     stored_filename = db.Column(db.String, default=None, nullable=True)
     comment = db.Column(db.String(140))
+    category = db.Column(db.String, default=None, nullable=True)
     is_graded = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=-1)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
-    def __init__(self, filename, comment, user_id):
+    def __init__(self, filename, comment, user_id, category=categories[1]):
         self.submission_filename = filename
         self.comment = comment
         self.user_id = user_id
+        self.category = category
 
     def set_grade(self, score):
         self.score = score

@@ -116,3 +116,6 @@ dmypy.json
 
 #sqlite database
 *.db
+
+#upload folder
+uploads/

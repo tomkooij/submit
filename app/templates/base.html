@@ -1,4 +1,6 @@
+<!doctype html>
 <html>
+{% block head %}
     <head>
       {% if title %}
       <title>{{ title }} - Submit</title>
@@ -6,19 +8,41 @@
       <title>Welkom bij Submit</title>
       {% endif %}
     </head>
+{% endblock %}
+
+{% block body %}
     <body>
-      <div>
+
+     <div>
+          Hoi, {{ current_user.username }}!
           Submit:
           <a href="{{ url_for('index') }}">Home</a>
-          <a href="{{ url_for('submit') }}">Submit</a>
           {% if current_user.is_anonymous %}
           <a href="{{ url_for('login') }}">Login</a>
           {% else %}
           <a href="{{ url_for('logout') }}">Logout</a>
           {% endif %}
       </div>
+
       <hr>
+
+      <div>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <hr>
+
       {% block content %}{% endblock %}
 
     </body>
+{% endblock %}
+
 </html>

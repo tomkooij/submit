@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hoi, {{ current_user.username }}!</h1>
+    <h3>Hoi, {{ current_user.username }}!</h3>
     {% include '_submit.html' %}
-
-    {% for sub in submissions %}
+    ---
+    <h3>Queue</h3>
+    {% for sub in queued_submissions %}
+    <div><p>{{ sub.submission_filename }} {{ sub.comment|string }} {{sub.timestamp}}</p></div>
+    {% endfor %}
+    ---
+    <h3>Results</h3>
+    {% for sub in graded_submissions %}
     <div><p>{{ sub.submission_filename }} {{ sub.comment|string }} {{sub.timestamp}}</p></div>
     {% endfor %}
 {% endblock %}

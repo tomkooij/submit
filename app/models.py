@@ -18,6 +18,9 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
             return check_password_hash(self.password_hash, password)
 
+    def submissions(self):
+        return Submission.query.filter_by(user_id=self.id)
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -25,16 +28,25 @@ class User(UserMixin, db.Model):
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     submission_filename = db.Column(db.String, default=None, nullable=True)
+    stored_filename = db.Column(db.String, default=None, nullable=True)
     comment = db.Column(db.String(140))
+    is_graded = db.Column(db.Boolean, default=False)
+    score = db.Column(db.Integer, default=-1)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, filename, comment):
+
+    def __init__(self, filename, comment, user_id):
         self.submission_filename = filename
         self.comment = comment
+        self.user_id = user_id
+
+    def set_grade(self, score):
+        self.score = score
+        self.is_graded = True
 
     def __repr__(self):
-        return '<Submission {}>'.format(self.body)
+        return '<Submission {} {} {}>'.format(self.submission_filename, self.timestamp, self.is_graded)
 
 
 @login.user_loader

@@ -18,8 +18,11 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
             return check_password_hash(self.password_hash, password)
 
-    def submissions(self):
-        return Submission.query.filter_by(user_id=self.id)
+    def ungraded_submissions(self):
+        return Submission.query.filter_by(user_id=self.id, is_graded=False).order_by(Submission.timestamp.desc())
+
+    def graded_submissions(self):
+        return Submission.query.filter_by(user_id=self.id, is_graded=True).order_by(Submission.timestamp.desc())
 
     def __repr__(self):
         return '<User {}>'.format(self.username)

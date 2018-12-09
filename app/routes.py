@@ -20,9 +20,8 @@ def index():
             db.session.commit()
             return redirect(url_for('index'))
 
-    queued_submissions = Submission.query.filter_by(user_id=current_user.id, is_graded=False).order_by(Submission.timestamp.desc()).all()
-
-    graded_submissions = Submission.query.filter_by(user_id=current_user.id, is_graded=True).order_by(Submission.timestamp.desc()).all()
+    queued_submissions = current_user.ungraded_submissions().all()
+    graded_submissions = current_user.graded_submissions().all()
 
     return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, graded_submissions=graded_submissions)
 

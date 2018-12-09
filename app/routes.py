@@ -7,15 +7,22 @@ from app.models import User, Submission
 from app.forms import LoginForm, SubmissionForm
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    results = [
-        { 'title': 'hello.py', 'result': 0 },
-        { 'title': 'piramide.py', 'result': 100 },
-        ]
-    return render_template("index.html", title='Home Page', results=results)
+    form = SubmissionForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            new_submission = Submission('file.py', str(form.comment.data),
+                current_user.id)
+            db.session.add(new_submission)
+            db.session.commit()
+            return redirect(url_for('index'))
+
+    submissions = current_user.submissions().order_by(Submission.timestamp.desc()).all()
+
+    return render_template("index.html", title='Home Page', form=form, submissions=submissions)
 
 
 @app.route('/submit', methods=['GET', 'POST'])
@@ -24,7 +31,8 @@ def submit():
     form = SubmissionForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_submission = Submission('file.py', str(form.comment))
+            new_submission = Submission('file.py', form.comment.data,
+                current_user.id)
             db.session.add(new_submission)
             db.session.commit()
             return redirect(url_for('index'))

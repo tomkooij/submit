@@ -2,9 +2,9 @@ from flask import render_template, request, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
-from app import app
-from app.models import User
-from app.forms import LoginForm
+from app import app, db
+from app.models import User, Submission
+from app.forms import LoginForm, SubmissionForm
 
 
 @app.route('/')
@@ -16,6 +16,22 @@ def index():
         { 'title': 'piramide.py', 'result': 100 },
         ]
     return render_template("index.html", title='Home Page', results=results)
+
+
+@app.route('/submit', methods=['GET', 'POST'])
+@login_required
+def submit():
+    form = SubmissionForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            new_submission = Submission('file.py', str(form.comment))
+            db.session.add(new_submission)
+            db.session.commit()
+            return redirect(url_for('index'))
+
+    return render_template('submit.html',
+                           form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -33,6 +49,7 @@ def login():
             next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
 
 @app.route('/logout')
 def logout():

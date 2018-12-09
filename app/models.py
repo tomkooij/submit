@@ -24,12 +24,17 @@ class User(UserMixin, db.Model):
 
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    submission_filename = db.Column(db.String, default=None, nullable=True)
     comment = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def __init__(self, filename, comment):
+        self.submission_filename = filename
+        self.comment = comment
+
     def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return '<Submission {}>'.format(self.body)
 
 
 @login.user_loader

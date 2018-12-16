@@ -45,7 +45,7 @@ class Submission(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
-    def __init__(self, filename, comment, user_id, category=categories[0]):
+    def __init__(self, filename=None, comment=None, user_id=None, category=categories[0]):
         self.submission_filename = filename
         self.comment = comment
         self.user_id = user_id

@@ -8,6 +8,14 @@ from app.models import User, Submission, categories
 from app.forms import LoginForm, SubmissionForm
 
 
+@app.route('/sub/<id>')
+@login_required
+def sub_page(id):
+    submission = Submission.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+
+    return render_template('submission.html', submission=submission)
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required

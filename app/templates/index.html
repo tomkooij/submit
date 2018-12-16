@@ -6,7 +6,8 @@
     ---
     <h3>Queue</h3>
     {% for sub in queued_submissions %}
-    <div><p>{{ sub.category }} fn: {{ sub.submission_filename }} comment: {{ sub.comment|string }} timestamp: {{sub.timestamp}}</p></div>
+    <div><p>id: <a href="/sub/{{sub.id}}">{{ sub.id }}</a>
+      cat: {{ sub.category }} fn: {{ sub.submission_filename }} comment: {{ sub.comment|string }} timestamp: {{sub.timestamp}}</p></div>
     {% endfor %}
     ---
     <h3>Results</h3>

@@ -35,15 +35,15 @@ class User(UserMixin, db.Model):
 
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    submission_filename = db.Column(db.String, default=None, nullable=True)
-    stored_filename = db.Column(db.String, default=None, nullable=True)
+    submission_filename = db.Column(db.String(30), default=None, nullable=True)
+    stored_filename = db.Column(db.String(100), default=None, nullable=True)
     comment = db.Column(db.String(140))
     category = db.Column(db.String, default=None, nullable=True)
     is_graded = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=-1)
     nTests = db.Column(db.Integer, default=-1)
     nPassed = db.Column(db.Integer, default=-1)
-    checkpy_output = db.Column(db.String, default=None, nullable=True)
+    checkpy_output = db.Column(db.String(100), default=None, nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 

@@ -32,7 +32,7 @@ def index():
                 db.session.commit()
                 flash('Bestand ingeleverd en aan queue toegevoegd.')
             else:
-                flash(f'Filename {fn} impliceert opdracht {cat}. Deze categorie bestaat niet!')
+                flash('Filename {fn} impliceert opdracht {cat}. Deze categorie bestaat niet!'.format(fn=fn, cat=cat))
 
             return redirect(url_for('index'))
         else:

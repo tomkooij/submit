@@ -41,6 +41,9 @@ class Submission(db.Model):
     category = db.Column(db.String, default=None, nullable=True)
     is_graded = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=-1)
+    nTests = db.Column(db.Integer, default=-1)
+    nPassed = db.Column(db.Integer, default=-1)
+    checkpy_output = db.Column(db.String, default=None, nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -56,7 +59,7 @@ class Submission(db.Model):
         self.is_graded = True
 
     def __repr__(self):
-        return '<Submission {} {} {}>'.format(self.submission_filename, self.timestamp, self.is_graded)
+        return '<Submission #{}: {} {} {} {}>'.format(self.id, self.submission_filename, self.timestamp, self.is_graded, self.score)
 
 
 @login.user_loader

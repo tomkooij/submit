@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
         return Submission.query.filter_by(user_id=self.id, is_graded=True).order_by(Submission.timestamp.desc())
 
     def best_submission(self, category):
-        return Submission.query.filter_by(user_id=self.id, category=category).order_by(Submission.score.desc()).first()
+        return Submission.query.filter_by(user_id=self.id, category=category, is_graded=True).order_by(Submission.score.desc()).first()
 
     def __init__(self, username=None, email=None):
         assert username is not None

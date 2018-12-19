@@ -1,15 +1,16 @@
 import subprocess
 import json
 import re
-import os, shutil, pathlib, tempfile
+import os, shutil, tempfile
 
 from app import db
 from app.models import User, Submission
 
 UPLOAD_PATH = 'uploads'
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 def get_uploads_path():
-    return pathlib.Path.cwd() / UPLOAD_PATH
+    return os.path.join(basedir, UPLOAD_PATH)
 
 def run_checkpy(path, filename):
     """run `checkpy` in json mode. Return results as string"""
@@ -34,21 +35,22 @@ def get_ungraded_submissions():
     nTests = results['nTests']
     nPassed = results['nPassed']
     if nTests:
-        print(f'In totaal {nTests} tests uitgevoerd. Het percentage is: {nPassed/nTests}')
+        print('In totaal {nTests} tests uitgevoerd. Het percentage is: {nPassed/nTests}'.format(nTests=nTests, nPassed=nPassed))
     else:
         print('Error: ', remove_ansi_escape(results['output'][0]))
 
 
 subs = get_ungraded_submissions()
 for sub in subs:
-    fn = get_uploads_path() / sub.submission_filename
-    if not fn.exists():
-        print(f'skipping {fn}: Not found.')
+    fn = os.path.join(get_uploads_path(), sub.submission_filename)
+    if not os.path.exists(fn):
+        print('skipping {}: Not found.'.format(fn))
         continue
     else:
-        print(f'processing {fn} {sub}')
+        print('processing {} {}'.format(fn, sub))
         with tempfile.TemporaryDirectory() as tmpdirname:
-            new_fn = os.path.join(tmpdirname, sub.category + fn.suffix)
+            base, suffix = os.path.splitext(fn)
+            new_fn = os.path.join(tmpdirname, sub.category + suffix)
             print(new_fn)
             shutil.copy(fn, new_fn)
             results = json.loads(run_checkpy(tmpdirname, sub.category))
@@ -57,7 +59,7 @@ for sub in subs:
             score = nPassed/nTests * 100
             output = remove_ansi_escape('\n'.join(results['output']))
             if nTests:
-                print(f'In totaal {nTests} tests uitgevoerd. Het percentage is: {score}')
+                print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, score))
                 print(output)
                 sub.score = score
                 sub.output = output

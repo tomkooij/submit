@@ -36,8 +36,13 @@ class User(UserMixin, db.Model):
     def best_submission(self, category):
         return Submission.query.filter_by(user_id=self.id, category=category).order_by(Submission.score.desc()).first()
 
+    def __init__(self, username=None, email=None):
+        assert username is not None
+        self.username = username
+        self.email = email
+
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User id: {}, username: {}>'.format(self.id, self.username)
 
 
 class Submission(db.Model):

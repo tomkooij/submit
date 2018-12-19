@@ -1,5 +1,4 @@
 {% block content %}
-    <hr>
     <div><p>
       id: <a href="/sub/{{submission.id}}">{{ submission.id }}</a>
       categorie: <a href="/results/{{submission.category}}">{{ submission.category }}</a>
@@ -21,4 +20,6 @@
           {{ submission.checkpy_output | nl2br }}
       {%endif %}
       </p></div>
+      <hr>
+
 {% endblock %}

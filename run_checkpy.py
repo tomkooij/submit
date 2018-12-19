@@ -53,7 +53,8 @@ for sub in subs:
             new_fn = os.path.join(tmpdirname, sub.category + suffix)
             print(new_fn)
             shutil.copy(fn, new_fn)
-            results = json.loads(run_checkpy(tmpdirname, sub.category))
+            checkpy_result = run_checkpy(tmpdirname, sub.category)
+            results = json.loads(checkpy_result.decode())
             nTests = results['nTests']
             nPassed = results['nPassed']
             score = nPassed/nTests * 100

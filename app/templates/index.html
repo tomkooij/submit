@@ -6,14 +6,15 @@
 
     {% include '_submit.html' %}
     ---
+    <h3>Resultaten:</h3>
+    {% for result in results %}
+        {%include '_result.html' %}
+    {% endfor %}
+    ---
     <h3>Wachtrij:</h3>
     De volgende ingeleverde bestanden wachten op beoordeling:
     {% for submission in queued_submissions %}
       {%include '_submission.html' %}
     {% endfor %}
-    ---
-    <h3>Resultaten:</h3>
-    {% for result in results %}
-        {%include '_result.html' %}
-    {% endfor %}
+
 {% endblock %}

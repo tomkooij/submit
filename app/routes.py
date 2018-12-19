@@ -1,4 +1,6 @@
-from flask import flash, render_template, request, redirect, url_for
+import os
+
+from flask import flash, render_template, request, redirect, url_for, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
@@ -8,12 +10,18 @@ from app.models import User, Submission, categories
 from app.forms import LoginForm, SubmissionForm
 
 
+@app.route('/show/<path:path>')
+@login_required
+def show_file(path):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], path)
+
+
 @app.route('/sub/<id>')
 @login_required
 def sub_page(id):
     submission = Submission.query.filter_by(id=id, user_id=current_user.id).first_or_404()
-
     return render_template('submission.html', submission=submission)
+
 
 @app.route('/results/<category>')
 @login_required

@@ -1,10 +1,24 @@
 {% block content %}
+    <hr>
     <div><p>
       id: <a href="/sub/{{submission.id}}">{{ submission.id }}</a>
       categorie: <a href="/results/{{submission.category}}">{{ submission.category }}</a>
-      bestandsnaam: {{ submission.submission_filename }}
+      bestandsnaam:
+      <a href="/show/{{submission.submission_filename}}"> {{ submission.submission_filename }}</a>
       <br>
       timestamp: {{submission.timestamp}}
       <br>
-      comment: {{ submission.comment }} </p></div>
+      comment: {{ submission.comment }}
+
+      {%if submission.is_graded %}
+          <br>
+          <b>Beoordeling: </b>
+          {{ submission.score }} %
+          aantal tests: {{submission.nTests}}
+          aantal juist: {{submission.nPassed}}
+          <br>
+          Checkpy output:
+          {{ submission.checkpy_output | nl2br }}
+      {%endif %}
+      </p></div>
 {% endblock %}

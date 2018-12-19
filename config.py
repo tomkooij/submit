@@ -27,3 +27,4 @@ class Config(object):
 
     UPLOADED_DEFAULT_DEST = 'uploads'
     UPLOADED_DEFAULT_ALLOW = ('py', 'ipynb')
+    UPLOAD_FOLDER = os.path.join(basedir, UPLOADED_DEFAULT_DEST)

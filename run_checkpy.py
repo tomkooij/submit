@@ -63,7 +63,7 @@ for sub in subs:
                 print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, score))
                 print(output)
                 sub.score = score
-                sub.output = output
+                sub.checkpy_output = output
                 sub.nTests = nTests
                 sub.nPassed = nPassed
                 sub.is_graded = True

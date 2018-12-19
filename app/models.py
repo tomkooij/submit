@@ -6,7 +6,14 @@ from flask_login import UserMixin
 from app import db, login
 
 # this could be a table...
-categories = ['hello', 'piramide', 'greedy']
+categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
+            'fuzzymatches', 'countmatches', 'goldbach', 'tunnel',
+            'piramide', 'randomwiskunde', 'levenshtein', 'greedy',
+            'priemgetal', 'water', 'temperatuur', 'monopoly', 'initials',
+            'autorit', 'histogram', 'hello', 'basejump', 'montecarlo',
+            'appel', 'reeks', 'findmatches', 'afstand',
+            'monopoly_realistisch']
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -38,7 +45,7 @@ class Submission(db.Model):
     submission_filename = db.Column(db.String(30), default=None, nullable=True)
     stored_filename = db.Column(db.String(100), default=None, nullable=True)
     comment = db.Column(db.String(140))
-    category = db.Column(db.String, default=None, nullable=True)
+    category = db.Column(db.String(30), default=None, nullable=True)
     is_graded = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=-1)
     nTests = db.Column(db.Integer, default=-1)

@@ -57,15 +57,16 @@ for sub in subs:
             results = json.loads(checkpy_result.decode())
             nTests = results['nTests']
             nPassed = results['nPassed']
-            score = nPassed/nTests * 100
             output = remove_ansi_escape('\n'.join(results['output']))
             if nTests:
+                score = nPassed/nTests * 100
                 print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, score))
                 print(output)
                 sub.score = score
                 sub.output = output
                 sub.nTests = nTests
                 sub.nPassed = nPassed
+                sub.is_graded = True
                 db.session.commit()
             else:
                 print('Error: ', remove_ansi_escape(results['output'][0]))

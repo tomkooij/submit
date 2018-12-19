@@ -12,9 +12,12 @@
     {% endfor %}
     ---
     <h3>Wachtrij:</h3>
-    De volgende ingeleverde bestanden wachten op beoordeling:
-    {% for submission in queued_submissions %}
-      {%include '_submission.html' %}
-    {% endfor %}
-
+    {% if queued_submissions %}
+      De volgende ingeleverde bestanden wachten op beoordeling:
+      {% for submission in queued_submissions %}
+        {%include '_submission.html' %}
+        {% endfor %}
+    {% else %}
+      De wachtrij is leeg!
+    {% endif %}
 {% endblock %}

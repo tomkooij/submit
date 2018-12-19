@@ -18,6 +18,7 @@ categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
+    naam = db.Column(db.String(120), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
 
@@ -36,13 +37,14 @@ class User(UserMixin, db.Model):
     def best_submission(self, category):
         return Submission.query.filter_by(user_id=self.id, category=category, is_graded=True).order_by(Submission.score.desc()).first()
 
-    def __init__(self, username=None, email=None):
+    def __init__(self, username=None, naam=None, email=None):
         assert username is not None
         self.username = username
+        self.naam = naam
         self.email = email
 
     def __repr__(self):
-        return '<User id: {}, username: {}>'.format(self.id, self.username)
+        return '<User #{}, username: {} "{}">'.format(self.id, self.username, self.naam)
 
 
 class Submission(db.Model):

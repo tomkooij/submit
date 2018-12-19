@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+Resultaat van deze categorie:
+{%include '_result.html' %}
+
+Ingeleverde en beoordeelde opdrachten:
+{% for submission in submissions %}
+  {% include '_submission.html' %}
+{% endfor %}
+
+{% endblock %}

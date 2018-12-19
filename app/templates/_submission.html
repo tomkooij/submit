@@ -1,0 +1,10 @@
+{% block content %}
+    <div><p>
+      id: <a href="/sub/{{submission.id}}">{{ submission.id }}</a>
+      categorie: <a href="/results/{{submission.category}}">{{ submission.category }}</a>
+      bestandsnaam: {{ submission.submission_filename }}
+      <br>
+      timestamp: {{submission.timestamp}}
+      <br>
+      comment: {{ submission.comment }} </p></div>
+{% endblock %}

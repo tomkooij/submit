@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <div><p>{{ submission.category }} fn: {{ submission.submission_filename }} comment: {{ submission.comment }} timestamp: {{submission.timestamp}}
-    </p></div>
-
-
+  {% include '_submission.html' %}
 {% endblock %}

@@ -15,6 +15,13 @@ def sub_page(id):
 
     return render_template('submission.html', submission=submission)
 
+@app.route('/results/<category>')
+@login_required
+def results_page(category):
+    submissions = Submission.query.filter_by(category=category, user_id=current_user.id, is_graded=True).all()
+    result = current_user.best_submission(category)
+    return render_template('results.html', result=result, submissions=submissions)
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -40,6 +47,7 @@ def index():
     queued_submissions = current_user.ungraded_submissions().all()
 
     results = [current_user.best_submission(category) for category in categories]
+    results = [x for x in results if x is not None]
 
     return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, results=results)
 

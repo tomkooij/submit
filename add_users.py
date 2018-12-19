@@ -14,21 +14,26 @@ def generate_password(length):
 
 with open(SOM_EXPORT, 'r') as csvfile:
     r = csv.reader(csvfile, delimiter=';')
-    users = []
-    for row in r:
-        #print(row)
-        _, llnnummer, naam, *rest = row
-        assert int(llnnummer)
-        username = 'cg'+llnnummer
-        password = generate_password(6)
-        print(username, password, naam)
-        u = User.query.filter_by(username=username).first()
-        if u is not None:
-            print('User found!', u)
-        else:
-            u = User(username, naam)
-            print('New user: ', u)
-        u.set_password(password)
-        u.naam = naam
-        db.session.add(u)
-    db.session.commit()
+    with open('passwd.csv', 'w') as outfile:
+        w = csv.writer(outfile,  dialect='excel')
+        w.writerow(['id', 'username', 'ww', 'naam'])
+
+        users = []
+        for row in r:
+            #print(row)
+            _, llnnummer, naam, *rest = row
+            assert int(llnnummer)
+            username = 'cg'+llnnummer
+            password = generate_password(6)
+            print(username, password, naam)
+            u = User.query.filter_by(username=username).first()
+            if u is not None:
+                print('User found!', u)
+            else:
+                u = User(username, naam)
+                print('New user: ', u)
+            u.set_password(password)
+            u.naam = naam
+            db.session.add(u)
+            w.writerow([u.id, username, password, naam])
+        db.session.commit()

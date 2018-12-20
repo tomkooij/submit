@@ -1,10 +1,12 @@
 import csv, random
 
 from app import db
-from app.models import User, Submission
+from app.models import User
 
 
-SOM_EXPORT = 'users.csv'
+SOM_EXPORT = 'users.csv' # read this
+PASSWDFILE = 'passwd.csv'  # will overwrite this
+
 
 def generate_password(length):
     pw_set = ('abcdefghijkmnpqrstuvwxyz'
@@ -12,15 +14,13 @@ def generate_password(length):
     pw = length * ' '
     return ''.join([random.choice(pw_set) for c in pw])
 
+
 with open(SOM_EXPORT, 'r') as csvfile:
-    r = csv.reader(csvfile, delimiter=';')
-    with open('passwd.csv', 'w') as outfile:
+    with open(PASSWDFILE, 'w') as outfile:
         w = csv.writer(outfile,  dialect='excel')
         w.writerow(['id', 'username', 'ww', 'naam'])
 
-        users = []
-        for row in r:
-            #print(row)
+        for row in csv.reader(csvfile, delimiter=';'):
             _, llnnummer, naam, *rest = row
             assert int(llnnummer)
             username = 'cg'+llnnummer

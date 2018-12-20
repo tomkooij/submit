@@ -12,7 +12,7 @@ categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
             'priemgetal', 'water', 'temperatuur', 'monopoly', 'initials',
             'autorit', 'histogram', 'hello', 'basejump', 'montecarlo',
             'appel', 'reeks', 'findmatches', 'afstand',
-            'monopoly_realistisch']
+            'monopoly_realistisch', 'nulpunten']
 
 
 class User(UserMixin, db.Model):

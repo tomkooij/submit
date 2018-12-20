@@ -55,7 +55,7 @@ for sub in subs:
             shutil.copy(fn, new_fn)
             checkpy_result = run_checkpy(tmpdirname, sub.category)
             results = json.loads(checkpy_result.decode())
-            nTests = results['nTests']
+            nTests = results['nRun']  # the number of actual tests
             nPassed = results['nPassed']
             output = remove_ansi_escape('\n'.join(results['output']))
             if nTests:

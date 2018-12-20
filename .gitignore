@@ -122,3 +122,8 @@ uploads/
 
 #migrations
 migrations/
+
+#user data and other secrets
+users.csv
+passwd.csv
+secrets.py

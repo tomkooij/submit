@@ -13,6 +13,9 @@ from app.forms import LoginForm, SubmissionForm
 @app.route('/show/<path:path>')
 @login_required
 def show_file(path):
+    # make sure the file belongs to the current user
+    # the query will throw a 404 if file does not exists for the current user
+    Submission.query.filter_by(submission_filename=path, user_id=current_user.id).first_or_404()
     return send_from_directory(app.config['UPLOAD_FOLDER'], path)
 
 

@@ -2,7 +2,6 @@
     <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <p>
-            {{ form.submission_file.label }}
             {{ form.submission_file }}
             {% for error in form.submission_file.errors %}
               <span style="color: red;">{{ error }}</span>

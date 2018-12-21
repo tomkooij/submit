@@ -30,18 +30,19 @@ Installatie
 
 Start een console in de virtualenv:
 
-  git clone github.com:tomkooij/submit
-  pip install -r requirements.txt
-  pip install checkpy
-  checkpy -d uva/progns
-  pip install matplotlib  # voor checkpy
-
+```
+git clone github.com:tomkooij/submit
+pip install -r requirements.txt
+pip install checkpy
+checkpy -d uva/progns
+pip install matplotlib  # voor checkpy
+```
  - Fix de MySQL config en secret in `config.py`
 
  - Configuratie op de Webtab van pythonanywhere:
 
-source code: /home/tomkooij/submit
-working dir: /home/tomkooij/submit
+  * source code: /home/tomkooij/submit
+  * working dir: /home/tomkooij/submit
 
 /var/www/tomkooij_pythonanywhere_com_wsgi.py
 ```
@@ -72,3 +73,5 @@ python
 >>> db.session.add(u)
 >>> db.session.commit()
 ```
+
+De admin interface is `/admin`

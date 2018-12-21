@@ -27,11 +27,10 @@ class MyAdminIndexView(AdminIndexView):
 
     @expose('/')
     def index(self):
-        print('entry', current_user)
         if not current_user.is_admin:
-            print('ffffaaal')
             return redirect(url_for('login'))
         return super(MyAdminIndexView, self).index()
+
 
 admin = Admin(app, name='submit', index_view=MyAdminIndexView(), template_mode='bootstrap3')
 

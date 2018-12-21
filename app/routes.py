@@ -20,7 +20,6 @@ class AdminModelView(ModelView):
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        print('callback!!!')
         return redirect(url_for('login', next=request.url))
 
 class MyAdminIndexView(AdminIndexView):
@@ -36,6 +35,11 @@ admin = Admin(app, name='submit', index_view=MyAdminIndexView(), template_mode='
 
 admin.add_view(AdminModelView(User, db.session))
 admin.add_view(AdminModelView(Submission, db.session))
+
+def best_submissions(user):
+    """return a list of the best submissions per category for a user"""
+    results = [user.best_submission(category) for category in categories]
+    return [x for x in results if x is not None]
 
 
 @app.route('/show/<path:path>')
@@ -62,6 +66,19 @@ def results_page(category):
     return render_template('results.html', result=result, submissions=submissions)
 
 
+@app.route('/all_results')
+@login_required
+def all_results_page():
+    if not current_user.is_admin:
+        return redirect(url_for('login'))
+    users = User.query.all()
+    stats = {}
+    for user in users:
+        stats[user] = best_submissions(user)
+        results = [user.best_submission('hello')]
+    return render_template('all_results.html', stats=stats)
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
@@ -85,8 +102,7 @@ def index():
             flash('ERROR: Er ging iets mis. Het bestand is NIET ingeleverd.')
     queued_submissions = current_user.ungraded_submissions().all()
 
-    results = [current_user.best_submission(category) for category in categories]
-    results = [x for x in results if x is not None]
+    results = best_submissions(current_user)
 
     return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, results=results)
 

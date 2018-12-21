@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Resultaten:</h1>
+
+
+{% for user, results in stats.items() %}
+<div>
+  Resultaat van: {{user.username}} {{user.naam}}
+  <br>
+  {% for result in results %}
+    {%include '_result.html' %}
+  {% endfor %}
+
+<hr>
+</div>
+{%endfor %}
+
+
+{% endblock %}

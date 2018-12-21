@@ -41,13 +41,21 @@ def get_ungraded_submissions():
 
 
 subs = get_ungraded_submissions()
+
+print(15*'#')
+print('len(queue) =', len(subs) )
+print(15*'#')
+
 for sub in subs:
     fn = os.path.join(get_uploads_path(), sub.submission_filename)
     if not os.path.exists(fn):
         print('skipping {}: Not found.'.format(fn))
         continue
     else:
-        print('processing {} {}'.format(fn, sub))
+        print(30*"*")
+        print('processing {} volgnummer: {}'.format(fn, sub.id))
+        print('DEBUG: ', sub)
+        print('DEBUG: ', User.query.filter_by(id=sub.user_id).first())
         with tempfile.TemporaryDirectory() as tmpdirname:
             base, suffix = os.path.splitext(fn)
             new_fn = os.path.join(tmpdirname, sub.category + suffix)

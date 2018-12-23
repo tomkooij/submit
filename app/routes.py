@@ -1,9 +1,5 @@
-import os
-
 from flask import flash, render_template, request, redirect, url_for, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
-from flask_admin import Admin, AdminIndexView, expose
-from flask_admin.contrib.sqla import ModelView
 
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
@@ -12,29 +8,6 @@ from app import app, db, pycode
 from app.models import User, Submission, categories
 from app.forms import LoginForm, SubmissionForm
 
-
-class AdminModelView(ModelView):
-
-    def is_accessible(self):
-        return current_user.is_admin
-
-    def inaccessible_callback(self, name, **kwargs):
-        # redirect to login page if user doesn't have access
-        return redirect(url_for('login', next=request.url))
-
-class MyAdminIndexView(AdminIndexView):
-
-    @expose('/')
-    def index(self):
-        if not current_user.is_admin:
-            return redirect(url_for('login'))
-        return super(MyAdminIndexView, self).index()
-
-
-admin = Admin(app, name='submit', index_view=MyAdminIndexView(), template_mode='bootstrap3')
-
-admin.add_view(AdminModelView(User, db.session))
-admin.add_view(AdminModelView(Submission, db.session))
 
 def best_submissions(user):
     """return a list of the best submissions per category for a user"""

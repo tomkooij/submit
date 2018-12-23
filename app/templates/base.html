@@ -22,6 +22,11 @@
           {% else %}
           <a href="{{ url_for('logout') }}">Logout</a>
           {% endif %}
+          {% if current_user.is_admin %}
+          <a href="{{ url_for('admin.index') }}">Admin</a>
+          <a href="{{ url_for('all_results_page') }}">All results</a>
+          {% endif %}
+
       </div>
 
       <hr>

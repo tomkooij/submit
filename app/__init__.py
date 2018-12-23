@@ -38,4 +38,4 @@ def nl2br(eval_ctx, value):
     return result
 
 
-from app import routes, models
+from app import routes, models, admin

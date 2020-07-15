@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:latest
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootfoobar
+      MYSQL_USER: tomkooij
+      MYSQL_PASSWORD: sokkenlichtkrant
+      MYSQL_DATABASE: submit
+
+    volumes:
+      - ./my-data:/var/lib/mysql

@@ -65,9 +65,10 @@ xxxx, llnnummber(4cijfers), wachtwoord, Naam, email
 
 ```
 python
+>>> import config
 >>> from app import db
 >>> from app.models import User
->>> u = User(tom, 'Tom Kooij', 'foo@foo')
+>>> u = User('tom', 'Tom Kooij', 'foo@foo')
 >>> u.set_password('geheim')
 >>> u.is_admin = True
 >>> db.session.add(u)

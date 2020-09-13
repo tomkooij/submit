@@ -7,6 +7,9 @@
               <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <p>
+            {{ form.submission_category.label }}
+            {{ form.submission_category }}
+            <p>
             {{ form.comment.label }}
             {{ form.comment(size=80) }}<br>
 

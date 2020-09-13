@@ -4,7 +4,8 @@ import re
 import os, shutil, tempfile
 
 from app import db
-from app.models import User, Submission
+from app.models import User, Submission, opdrachten
+
 
 UPLOAD_PATH = 'uploads'
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -67,9 +68,17 @@ for sub in subs:
             nPassed = results['nPassed']
             output = remove_ansi_escape('\n'.join(results['output']))
             if nTests:
-                score = nPassed/nTests * 100
-                print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, score))
+                percentage = nPassed/nTests * 100
+                max_score = opdrachten.get(sub.category, None)
+                if max_score:
+                    score = int(nPassed/nTests * max_score)
+                    print('Max score is: {}'.format(max_score))
+                else:
+                    score = 0
+                print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, percentage))
+                print('Score: {}'.format(score))
                 print(output)
+                sub.percentage = percentage
                 sub.score = score
                 sub.checkpy_output = output
                 sub.nTests = nTests

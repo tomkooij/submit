@@ -6,13 +6,21 @@ from flask_login import UserMixin
 from app import db, login
 
 # this could be a table...
-categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
-            'fuzzymatches', 'countmatches', 'goldbach', 'tunnel',
-            'piramide', 'randomwiskunde', 'levenshtein', 'greedy',
-            'priemgetal', 'water', 'temperatuur', 'monopoly', 'initials',
-            'autorit', 'histogram', 'hello', 'basejump', 'montecarlo',
-            'appel', 'reeks', 'findmatches', 'afstand',
-            'monopoly_realistisch', 'nulpunten']
+#categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
+#            'fuzzymatches', 'countmatches', 'goldbach', 'tunnel',
+#            'piramide', 'randomwiskunde', 'levenshtein', 'greedy',
+#            'priemgetal', 'water', 'temperatuur', 'monopoly', 'initials',
+#            'autorit', 'histogram', 'hello', 'basejump', 'montecarlo',
+#            'appel', 'reeks', 'findmatches', 'afstand',
+#            'monopoly_realistisch', 'nulpunten']
+
+opdrachten = {#naam, score
+                'rechthoek': 0,
+                'vierkant': 10,
+                'trapezium': 20,
+                'hoogsteuitkomst': 10,
+             }
+categories = list(opdrachten.keys())
 
 
 class User(UserMixin, db.Model):
@@ -56,6 +64,7 @@ class Submission(db.Model):
     category = db.Column(db.String(30), default=None, nullable=True)
     is_graded = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=-1)
+    percentage = db.Column(db.Integer, default=-1)
     nTests = db.Column(db.Integer, default=-1)
     nPassed = db.Column(db.Integer, default=-1)
     checkpy_output = db.Column(db.String(1000), default=None, nullable=True)

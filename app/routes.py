@@ -58,17 +58,13 @@ def all_results_page():
 def index():
     form = SubmissionForm()
     if request.method == 'POST':
-        if form.validate_on_submit():
+        if 1: #form.validate_on_submit():
             fn = form.submission_file.data.filename
-            cat = fn.split('.', 1)[0]
-            if cat in categories:
-                filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))
-                new_submission = Submission(filename=filename, comment=str(form.comment.data), user_id=current_user.id, category=cat)
-                db.session.add(new_submission)
-                db.session.commit()
-                flash('Bestand ingeleverd en aan queue toegevoegd.')
-            else:
-                flash('Filename {fn} impliceert opdracht {cat}. Deze categorie bestaat niet!'.format(fn=fn, cat=cat))
+            filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))
+            new_submission = Submission(filename=filename, comment=str(form.comment.data), user_id=current_user.id, category=form.submission_category.data)
+            db.session.add(new_submission)
+            db.session.commit()
+            flash('Bestand ingeleverd en aan queue toegevoegd.')
 
             return redirect(url_for('index'))
         else:

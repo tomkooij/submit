@@ -65,13 +65,18 @@ xxxx, llnnummber(4cijfers), wachtwoord, Naam, email
 
 ```
 python
+>>> import config
 >>> from app import db
 >>> from app.models import User
->>> u = User(tom, 'Tom Kooij', 'foo@foo')
->>> u.set_password('geheim')
+>>> u = User('tom', 'Tom Kooij', 'foo@foo')
+>>> u.set_password(vulietsin)
 >>> u.is_admin = True
 >>> db.session.add(u)
 >>> db.session.commit()
+```
+
+```
+$ flask run --host 0.0.0.0
 ```
 
 De admin interface is `/admin`

@@ -39,3 +39,8 @@ def nl2br(eval_ctx, value):
 
 
 from app import routes, models, admin
+
+
+@login.user_loader
+def load_user(id):
+    return models.User.query.get(int(id))

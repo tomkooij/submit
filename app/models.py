@@ -75,8 +75,3 @@ class Submission(db.Model):
 
     def __repr__(self):
         return '<Submission #{}: {} {} {} {}>'.format(self.id, self.submission_filename, self.timestamp, self.is_graded, self.score)
-
-
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))

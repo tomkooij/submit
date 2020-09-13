@@ -5,20 +5,26 @@ Inlever tooltje voor NLT Inleinding programmeren: github.com:tomkooij/nltprog
 
 Auto-grader: Deze tool haalt ingeleverde opdrachten door checkpy.
 
-Flask App die op pythonanywhere.com draait.
+Flask App die eerste op pythonanywhere.com draaide. Draait nu op HTPC.
 
 
 Hoe werkt dit?
 --------------
 
+Draai de app met `run_flash.sh`.
+
 Leerlingen leveren opdrachten in. De bestandsnaam bepaald de opdracht,
 zoals `checkpy` dat doet. De bestandsnamen zijn hard-coded in `app/models.py`
 
+(In de branch `olympiade` staat een versie de werkt voor PO1. Hier bepaald
+een dropdown menu de opdracht. `run_checkpy` past sowieso de opdrachtnaam
+weer opnieuw aan voor `checkpy`)
+
 Opdrachten (`models.Submission`) komen in de wachtrij.
 
-In een console met de juiste virtualenv:
+In een screen met de juiste env (`conda activate flask`):
 
-  python run_checkpy
+  $ ./run_checkpy
 
 Dit haalt alle opdrachten uit de wachtrij door checkpy.
 

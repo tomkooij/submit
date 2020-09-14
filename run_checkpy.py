@@ -4,7 +4,7 @@ import re
 import os, shutil, tempfile
 
 from app import db
-from app.models import User, Submission, opdrachten
+from app.models import User, Submission, opdracht_score
 
 
 UPLOAD_PATH = 'uploads'
@@ -69,7 +69,7 @@ for sub in subs:
             output = remove_ansi_escape('\n'.join(results['output']))
             if nTests:
                 percentage = nPassed/nTests * 100
-                max_score = opdrachten.get(sub.category, None)
+                max_score = opdracht_score.get(sub.category, None)
                 if max_score:
                     score = int(nPassed/nTests * max_score)
                     print('Max score is: {}'.format(max_score))

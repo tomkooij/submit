@@ -7,6 +7,9 @@
     {% include '_submit.html' %}
     ---
     <h3>Resultaten:</h3>
+    Totaal score: {{ score }}
+    <p>
+    ---
     {% for result in results %}
         {%include '_result.html' %}
     {% endfor %}

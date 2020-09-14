@@ -12,7 +12,7 @@
       {%if submission.is_graded %}
           <br>
           <b>Beoordeling: </b>
-          {{ submission.score }} %
+          percentage juist: {{ submission.percentage }} % score: {{ submission.score }}
           aantal tests: {{submission.nTests}}
           aantal juist: {{submission.nPassed}}
           <br>

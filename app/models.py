@@ -14,13 +14,13 @@ from app import db, login
 #            'appel', 'reeks', 'findmatches', 'afstand',
 #            'monopoly_realistisch', 'nulpunten']
 
-opdrachten = {#naam, score
+opdracht_score = {#naam, score
                 'rechthoek': 0,
                 'vierkant': 10,
                 'trapezium': 20,
                 'hoogsteuitkomst': 10,
              }
-categories = list(opdrachten.keys())
+categories = list(opdracht_score.keys())
 
 
 class User(UserMixin, db.Model):
@@ -45,6 +45,9 @@ class User(UserMixin, db.Model):
 
     def best_submission(self, category):
         return Submission.query.filter_by(user_id=self.id, category=category, is_graded=True).order_by(Submission.score.desc()).first()
+
+    def best_score(self, category):
+        return self.best_submission(category).score
 
     def __init__(self, username=None, naam=None, email=None):
         assert username is not None

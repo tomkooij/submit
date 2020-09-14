@@ -15,6 +15,12 @@ def best_submissions(user):
     return [x for x in results if x is not None]
 
 
+def total_score(user):
+    """returns the total score (cijfer?) for a user"""
+    scores = [user.best_score(category) for category in categories]
+    return sum(scores)
+
+
 @app.route('/show/<path:path>')
 @login_required
 def show_file(path):
@@ -48,7 +54,6 @@ def all_results_page():
     stats = {}
     for user in users:
         stats[user] = best_submissions(user)
-        results = [user.best_submission('hello')]
     return render_template('all_results.html', stats=stats)
 
 
@@ -72,8 +77,9 @@ def index():
     queued_submissions = current_user.ungraded_submissions().all()
 
     results = best_submissions(current_user)
+    score = total_score(current_user)
 
-    return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, results=results)
+    return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, results=results, score=score)
 
 
 @app.route('/login', methods=['GET', 'POST'])

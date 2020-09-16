@@ -15,8 +15,8 @@ from app import db, login
 #            'monopoly_realistisch', 'nulpunten']
 
 opdracht_score = {#naam, score
-                'rechthoek': 0,
-                'vierkant': 10,
+                'rechthoek': 10,
+                'vierkant': 0,
                 'trapezium': 20,
                 'hoogsteuitkomst': 10,
              }
@@ -47,7 +47,10 @@ class User(UserMixin, db.Model):
         return Submission.query.filter_by(user_id=self.id, category=category, is_graded=True).order_by(Submission.score.desc()).first()
 
     def best_score(self, category):
-        return self.best_submission(category).score
+        if self.best_submission(category):
+            return self.best_submission(category).score
+        else:
+            return 0
 
     def __init__(self, username=None, naam=None, email=None):
         assert username is not None

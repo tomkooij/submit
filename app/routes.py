@@ -64,7 +64,7 @@ def all_results_page():
 def index():
     form = SubmissionForm()
     if request.method == 'POST':
-        if 1: #form.validate_on_submit():
+        if form.validate_on_submit():
             fn = form.submission_file.data.filename
             try:
               filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))

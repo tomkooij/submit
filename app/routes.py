@@ -25,16 +25,20 @@ def total_score(user):
 @app.route('/show/<path:path>')
 @login_required
 def show_file(path):
-    # make sure the file belongs to the current user
-    # the query will throw a 404 if file does not exists for the current user
-    Submission.query.filter_by(submission_filename=path, user_id=current_user.id).first_or_404()
+    if current_user.is_admin:
+        Submission.query.filter_by(submission_filename=path).first_or_404()
+    else:
+        Submission.query.filter_by(submission_filename=path, user_id=current_user.id).first_or_404()
     return send_from_directory(app.config['UPLOAD_FOLDER'], path)
 
 
 @app.route('/sub/<id>')
 @login_required
 def sub_page(id):
-    submission = Submission.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    if current_user.is_admin:
+        submission = Submission.query.filter_by(id=id).first_or_404()
+    else:
+        submission = Submission.query.filter_by(id=id, user_id=current_user.id).first_or_404()
     return render_template('submission.html', submission=submission)
 
 
@@ -44,6 +48,16 @@ def results_page(category):
     submissions = Submission.query.filter_by(category=category, user_id=current_user.id, is_graded=True).all()
     result = current_user.best_submission(category)
     return render_template('results.html', result=result, submissions=submissions)
+
+@app.route('/results_for/<user_id>/<category>')
+@login_required
+def results_for_page(user_id, category):
+    if current_user.id == user_id or current_user.is_admin:
+        submissions = Submission.query.filter_by(category=category, user_id=user_id, is_graded=True).all()
+        result = current_user.best_submission(category)
+        return render_template('results.html', result=result, submissions=submissions)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/all_results')

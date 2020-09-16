@@ -1,0 +1,7 @@
+{% block content %}
+      <div><p>
+        categorie: <a href="/results_for/{{user.id}}/{{result.category}}">{{ result.category }}</a>
+        resultaat: {{ result.score }} / {{ result.percentage }} %
+      </p></div>
+      <hr>
+{% endblock %}

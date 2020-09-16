@@ -69,7 +69,7 @@ def index():
             try:
               filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))
             except UploadNotAllowed:
-              flash('Alleen .py en .ipynb toegestaan. Het bestand is NIET ingeleverd.')
+              flash('Alleen .py en .ipynb toegestaan. Het bestand is NIET ingeleverd.', 'error')
               return redirect(url_for('index'))
             new_submission = Submission(filename=filename, comment=str(form.comment.data), user_id=current_user.id, category=form.submission_category.data)
             db.session.add(new_submission)
@@ -78,7 +78,7 @@ def index():
 
             return redirect(url_for('index'))
         else:
-            flash('ERROR: Er ging iets mis. Het bestand is NIET ingeleverd.')
+            flash('ERROR: Er ging iets mis. Het bestand is NIET ingeleverd.', 'error')
     queued_submissions = current_user.ungraded_submissions().all()
 
     results = best_submissions(current_user)

@@ -15,8 +15,10 @@ def get_uploads_path():
 
 def run_checkpy(path, filename):
     """run `checkpy` in json mode. Return results as string"""
-    return subprocess.run(['checkpy', filename, '--json'], cwd=path, stdout=subprocess.PIPE).stdout
-
+    try:
+        return subprocess.run(['checkpy', filename, '--json'], cwd=path, stdout=subprocess.PIPE).stdout
+    except Exception as e:
+        return str(e)
 
 def remove_ansi_escape(line):
     """
@@ -63,27 +65,33 @@ for sub in subs:
             print(new_fn)
             shutil.copy(fn, new_fn)
             checkpy_result = run_checkpy(tmpdirname, sub.category)
-            results = json.loads(checkpy_result.decode())
-            nTests = results['nRun']  # the number of actual tests
-            nPassed = results['nPassed']
-            output = remove_ansi_escape('\n'.join(results['output']))
+            try:
+                results = json.loads(checkpy_result.decode())
+                nTests = results['nRun']  # the number of actual tests
+                nPassed = results['nPassed']
+                output = remove_ansi_escape('\n'.join(results['output']))
+            except Exception as e:
+                print('JSON error: ', e)
+                nTests = 0
+                nPassed = 0
+                output = 'Checkpy error'
             if nTests:
                 percentage = nPassed/nTests * 100
-                max_score = opdracht_score.get(sub.category, None)
-                if max_score:
-                    score = int(nPassed/nTests * max_score)
-                    print('Max score is: {}'.format(max_score))
-                else:
-                    score = 0
-                print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, percentage))
-                print('Score: {}'.format(score))
-                print(output)
-                sub.percentage = percentage
-                sub.score = score
-                sub.checkpy_output = output
-                sub.nTests = nTests
-                sub.nPassed = nPassed
-                sub.is_graded = True
-                db.session.commit()
             else:
-                print('Error: ', remove_ansi_escape(results['output'][0]))
+                percentage = 0
+            max_score = opdracht_score.get(sub.category, None)
+            if max_score:
+                score = int(nPassed/nTests * max_score)
+                print('Max score is: {}'.format(max_score))
+            else:
+                score = 0
+            print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, percentage))
+            print('Score: {}'.format(score))
+            print(output)
+            sub.percentage = percentage
+            sub.score = score
+            sub.checkpy_output = output
+            sub.nTests = nTests
+            sub.nPassed = nPassed
+            sub.is_graded = True
+            db.session.commit()

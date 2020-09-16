@@ -1,5 +1,6 @@
 from flask import flash, render_template, request, redirect, url_for, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_uploads import UploadNotAllowed
 
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
@@ -65,7 +66,11 @@ def index():
     if request.method == 'POST':
         if 1: #form.validate_on_submit():
             fn = form.submission_file.data.filename
-            filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))
+            try:
+              filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))
+            except UploadNotAllowed:
+              flash('Alleen .py en .ipynb toegestaan. Het bestand is NIET ingeleverd.')
+              return redirect(url_for('index'))
             new_submission = Submission(filename=filename, comment=str(form.comment.data), user_id=current_user.id, category=form.submission_category.data)
             db.session.add(new_submission)
             db.session.commit()

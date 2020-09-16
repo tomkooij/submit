@@ -62,7 +62,7 @@ for sub in subs:
         with tempfile.TemporaryDirectory() as tmpdirname:
             base, suffix = os.path.splitext(fn)
             new_fn = os.path.join(tmpdirname, sub.category + suffix)
-            print(new_fn)
+            print(new_fn, sub.category)
             shutil.copy(fn, new_fn)
             checkpy_result = run_checkpy(tmpdirname, sub.category)
             try:
@@ -77,13 +77,12 @@ for sub in subs:
                 output = 'Checkpy error'
             if nTests:
                 percentage = nPassed/nTests * 100
+                max_score = opdracht_score.get(sub.category, None)
+                if max_score is not None:
+                    score = int(nPassed/nTests * max_score)
+                    print('Max score is: {}'.format(max_score))
             else:
                 percentage = 0
-            max_score = opdracht_score.get(sub.category, None)
-            if max_score:
-                score = int(nPassed/nTests * max_score)
-                print('Max score is: {}'.format(max_score))
-            else:
                 score = 0
             print('In totaal {} tests uitgevoerd. Het percentage is: {}'.format(nTests, percentage))
             print('Score: {}'.format(score))

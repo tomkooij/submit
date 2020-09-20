@@ -19,6 +19,11 @@ opdracht_score = {#naam, score
                 'vierkant': 0,
                 'trapezium': 20,
                 'hoogsteuitkomst': 10,
+                # A2
+                'klnkrwg': 0,
+                'ceasar': 30,
+                'letterbeeld': 20,
+                'balletjeballetje': 20,
              }
 categories = list(opdracht_score.keys())
 

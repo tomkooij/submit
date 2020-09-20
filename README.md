@@ -45,13 +45,9 @@ pip install matplotlib  # voor checkpy
 
  - MySQL draait in docker, zie `docker-compose.yml`:
  
-```
-$ docker-compose up -d 
-``` 
+ $ docker-compose up -d 
 
 Voeg gebruikers toe:
-
-```
 
  - Gebruik `add_users.py` om gebruikers te maken:
 

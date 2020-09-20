@@ -6,13 +6,21 @@ from flask_login import UserMixin
 from app import db, login
 
 # this could be a table...
-categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
-            'fuzzymatches', 'countmatches', 'goldbach', 'tunnel',
-            'piramide', 'randomwiskunde', 'levenshtein', 'greedy',
-            'priemgetal', 'water', 'temperatuur', 'monopoly', 'initials',
-            'autorit', 'histogram', 'hello', 'basejump', 'montecarlo',
-            'appel', 'reeks', 'findmatches', 'afstand',
-            'monopoly_realistisch', 'nulpunten']
+#categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
+#            'fuzzymatches', 'countmatches', 'goldbach', 'tunnel',
+#            'piramide', 'randomwiskunde', 'levenshtein', 'greedy',
+#            'priemgetal', 'water', 'temperatuur', 'monopoly', 'initials',
+#            'autorit', 'histogram', 'hello', 'basejump', 'montecarlo',
+#            'appel', 'reeks', 'findmatches', 'afstand',
+#            'monopoly_realistisch', 'nulpunten']
+
+opdracht_score = {#naam, score
+                'rechthoek': 10,
+                'vierkant': 0,
+                'trapezium': 20,
+                'hoogsteuitkomst': 10,
+             }
+categories = list(opdracht_score.keys())
 
 
 class User(UserMixin, db.Model):
@@ -38,6 +46,12 @@ class User(UserMixin, db.Model):
     def best_submission(self, category):
         return Submission.query.filter_by(user_id=self.id, category=category, is_graded=True).order_by(Submission.score.desc()).first()
 
+    def best_score(self, category):
+        if self.best_submission(category):
+            return self.best_submission(category).score
+        else:
+            return 0
+
     def __init__(self, username=None, naam=None, email=None):
         assert username is not None
         self.username = username
@@ -56,6 +70,7 @@ class Submission(db.Model):
     category = db.Column(db.String(30), default=None, nullable=True)
     is_graded = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=-1)
+    percentage = db.Column(db.Integer, default=-1)
     nTests = db.Column(db.Integer, default=-1)
     nPassed = db.Column(db.Integer, default=-1)
     checkpy_output = db.Column(db.String(1000), default=None, nullable=True)

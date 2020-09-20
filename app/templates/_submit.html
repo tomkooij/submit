@@ -1,11 +1,15 @@
 {% block content %}
     <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
         {{ form.hidden_tag() }}
         <p>
             {{ form.submission_file }}
             {% for error in form.submission_file.errors %}
               <span style="color: red;">{{ error }}</span>
             {% endfor %}
+            <p>
+            {{ form.submission_category.label }}
+            {{ form.submission_category }}
             <p>
             {{ form.comment.label }}
             {{ form.comment(size=80) }}<br>

@@ -32,36 +32,22 @@ Dit haalt alle opdrachten uit de wachtrij door checkpy.
 Installatie
 -----------
 
- - Maak virtualenv op pythonanywhere
-
-Start een console in de virtualenv:
-
 ```
+conda activate flask
 git clone github.com:tomkooij/submit
 pip install -r requirements.txt
 pip install checkpy
-checkpy -d uva/progns
+checkpy -d uva/progns  # voor PO1 is er private repo met de olympiade oplossingen
 pip install matplotlib  # voor checkpy
 ```
+
  - Fix de MySQL config en secret in `config.py`
 
- - Configuratie op de Webtab van pythonanywhere:
+ - MySQL draait in docker, zie `docker-compose.yml`:
+ 
+ $ docker-compose up -d 
 
-  * source code: /home/tomkooij/submit
-  * working dir: /home/tomkooij/submit
-
-/var/www/tomkooij_pythonanywhere_com_wsgi.py
-```
-import sys
-
-# add your project directory to the sys.path
-project_home = u'/home/tomkooij/submit'
-if project_home not in sys.path:
-    sys.path = [project_home] + sys.path
-
-# import flask app but need to call it "application" for WSGI to work
-from submit import app as application
-```
+Voeg gebruikers toe:
 
  - Gebruik `add_users.py` om gebruikers te maken:
 

@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Submit</h1>
+    <p>
     Lever hier je opdracht in... blabla:
 
     {% include '_submit.html' %}
     ---
     <h3>Resultaten:</h3>
+    Totaal score: {{ score }}
+    <p>
+    ---
     {% for result in results %}
         {%include '_result.html' %}
     {% endfor %}

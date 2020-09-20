@@ -1,5 +1,6 @@
 from flask import flash, render_template, request, redirect, url_for, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_uploads import UploadNotAllowed
 
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
@@ -15,19 +16,29 @@ def best_submissions(user):
     return [x for x in results if x is not None]
 
 
+def total_score(user):
+    """returns the total score (cijfer?) for a user"""
+    scores = [user.best_score(category) for category in categories]
+    return sum(scores)
+
+
 @app.route('/show/<path:path>')
 @login_required
 def show_file(path):
-    # make sure the file belongs to the current user
-    # the query will throw a 404 if file does not exists for the current user
-    Submission.query.filter_by(submission_filename=path, user_id=current_user.id).first_or_404()
+    if current_user.is_admin:
+        Submission.query.filter_by(submission_filename=path).first_or_404()
+    else:
+        Submission.query.filter_by(submission_filename=path, user_id=current_user.id).first_or_404()
     return send_from_directory(app.config['UPLOAD_FOLDER'], path)
 
 
 @app.route('/sub/<id>')
 @login_required
 def sub_page(id):
-    submission = Submission.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    if current_user.is_admin:
+        submission = Submission.query.filter_by(id=id).first_or_404()
+    else:
+        submission = Submission.query.filter_by(id=id, user_id=current_user.id).first_or_404()
     return render_template('submission.html', submission=submission)
 
 
@@ -37,6 +48,16 @@ def results_page(category):
     submissions = Submission.query.filter_by(category=category, user_id=current_user.id, is_graded=True).all()
     result = current_user.best_submission(category)
     return render_template('results.html', result=result, submissions=submissions)
+
+@app.route('/results_for/<user_id>/<category>')
+@login_required
+def results_for_page(user_id, category):
+    if current_user.id == user_id or current_user.is_admin:
+        submissions = Submission.query.filter_by(category=category, user_id=user_id, is_graded=True).all()
+        result = current_user.best_submission(category)
+        return render_template('results.html', result=result, submissions=submissions)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/all_results')
@@ -48,7 +69,6 @@ def all_results_page():
     stats = {}
     for user in users:
         stats[user] = best_submissions(user)
-        results = [user.best_submission('hello')]
     return render_template('all_results.html', stats=stats)
 
 
@@ -60,24 +80,25 @@ def index():
     if request.method == 'POST':
         if form.validate_on_submit():
             fn = form.submission_file.data.filename
-            cat = fn.split('.', 1)[0]
-            if cat in categories:
-                filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))
-                new_submission = Submission(filename=filename, comment=str(form.comment.data), user_id=current_user.id, category=cat)
-                db.session.add(new_submission)
-                db.session.commit()
-                flash('Bestand ingeleverd en aan queue toegevoegd.')
-            else:
-                flash('Filename {fn} impliceert opdracht {cat}. Deze categorie bestaat niet!'.format(fn=fn, cat=cat))
+            try:
+              filename = pycode.save(form.submission_file.data, folder=secure_filename(current_user.username))
+            except UploadNotAllowed:
+              flash('Alleen .py en .ipynb toegestaan. Het bestand is NIET ingeleverd.', 'error')
+              return redirect(url_for('index'))
+            new_submission = Submission(filename=filename, comment=str(form.comment.data), user_id=current_user.id, category=form.submission_category.data)
+            db.session.add(new_submission)
+            db.session.commit()
+            flash('Bestand ingeleverd en aan queue toegevoegd.')
 
             return redirect(url_for('index'))
         else:
-            flash('ERROR: Er ging iets mis. Het bestand is NIET ingeleverd.')
+            flash('ERROR: Er ging iets mis. Het bestand is NIET ingeleverd.', 'error')
     queued_submissions = current_user.ungraded_submissions().all()
 
     results = best_submissions(current_user)
+    score = total_score(current_user)
 
-    return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, results=results)
+    return render_template("index.html", title='Home Page', form=form, queued_submissions=queued_submissions, results=results, score=score)
 
 
 @app.route('/login', methods=['GET', 'POST'])

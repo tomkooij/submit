@@ -7,7 +7,7 @@
 
 {% for user, results in stats.items() %}
 <div>
-  Resultaat van: {{user.username}} {{user.naam}}
+  <h5>Resultaat van: {{user.username}} {{user.naam}}</h5>
   <br>
   {% for result in results %}
     {%include '_result_for_userid.html' %}

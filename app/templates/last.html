@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+.
+<p>
+Laatste {{N}} ingeleverde en beoordeelde opdrachten:
+<p>
+{% for submission in submissions %}
+  {% include '_submission.html' %}
+{% endfor %}
+
+{% endblock %}

@@ -52,6 +52,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('all_results_page') }}">All results</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('last_n_page', N=10) }}">Laatste 10</a>
+            </li>
         {% endif %}
 	    </ul>
         </div>

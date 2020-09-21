@@ -42,6 +42,14 @@ def sub_page(id):
     return render_template('submission.html', submission=submission)
 
 
+@app.route('/last/<N>')
+@login_required
+def last_n_page(N):
+    N = int(N)
+    submissions = Submission.query.all()[-N:]
+    return render_template('last.html', N=N, submissions=reversed(submissions))
+
+
 @app.route('/results/<category>')
 @login_required
 def results_page(category):

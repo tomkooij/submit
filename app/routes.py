@@ -49,6 +49,7 @@ def results_page(category):
     result = current_user.best_submission(category)
     return render_template('results.html', result=result, submissions=submissions)
 
+
 @app.route('/results_for/<user_id>/<category>')
 @login_required
 def results_for_page(user_id, category):
@@ -60,6 +61,17 @@ def results_for_page(user_id, category):
         return redirect(url_for('login'))
 
 
+@app.route('/all_users')
+@login_required
+def all_users_page():
+    if not current_user.is_admin:
+        return redirect(url_for('login'))
+    users = User.query.all()
+    score = {}
+    for user in users:
+        score[user] = total_score(user)
+    return render_template('all_users.html', score=score)
+
 @app.route('/all_results')
 @login_required
 def all_results_page():
@@ -69,6 +81,17 @@ def all_results_page():
     stats = {}
     for user in users:
         stats[user] = best_submissions(user)
+    return render_template('all_results.html', stats=stats)
+
+
+@app.route('/all_results/<username>')
+@login_required
+def all_results_user_page(username):
+    if not current_user.is_admin:
+        return redirect(url_for('login'))
+    user = User.query.filter_by(username=username).first_or_404()
+    stats = {}
+    stats[user] = best_submissions(user)
     return render_template('all_results.html', stats=stats)
 
 

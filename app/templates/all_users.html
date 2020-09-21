@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Resultaten:</h1>
+
+
+{% for user, user_score in score.items() %}
+<div>
+  Resultaat van: <a href="/all_results/{{user.username}}"" >{{user.username}}</a> {{user.naam}} score: {{user_score}}
+<hr>
+</div>
+{%endfor %}
+
+
+{% endblock %}

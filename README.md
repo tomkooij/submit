@@ -23,37 +23,11 @@ Opdrachten (`models.Submission`) komen in de wachtrij.
 
 
 Installatie
-
 -----------
-MySQL en checkpy daaien in Docker containers: `docker-compose up -d`.
 
-Draai de webserver app met `run_flash.sh`. TODO: gunicorn ervoor zetten (TLS).
+ - Verander de MySQL config (root password) en secret in `config.py`
 
-In de checkpy docker container:
-  $ ./run_checkpy_docker.sh
-(detach met ctrl-p ctrl-q ;) )
-
-Dit haalt alle opdrachten uit de wachtrij door checkpy.
-De opdrachten draaien de checkpy container: chroot jail, submit folder is
-read-only gemount. Unpriviledge user.
-
-TODO: 
-  - checkpy container beter firewallen
-  - timeout in checkpy (infinite loops) debuggen: lijkt niet te werken
-
-
-```
-conda activate flask
-git clone github.com:tomkooij/submit
-pip install -r requirements.txt
-pip install checkpy
-checkpy -d uva/progns  # voor PO1 is er private repo met de olympiade oplossingen
-pip install matplotlib  # voor checkpy
-```
-
- - Fix de MySQL config en secret in `config.py`
-
- - MySQL draait in docker, zie `docker-compose.yml`:
+ - MySQL en checkpy draaien in docker, zie `docker-compose.yml`:
  
  $ docker-compose up -d 
 
@@ -65,9 +39,7 @@ xxxx, llnnummber(4cijfers), wachtwoord, Naam, email
 
   - Maak de admin user:
 
-```
-python
->>> import config
+```python
 >>> from app import db
 >>> from app.models import User
 >>> u = User('tom', 'Tom Kooij', 'foo@foo')
@@ -77,8 +49,26 @@ python
 >>> db.session.commit()
 ```
 
+Draai de webserver app met `run_flash.sh`. 
+
+Installeer checkpy ook lokaal en installeer tests in ./tests
+(Clone ze van github en kopieer naar `./tests`)
 ```
-$ flask run --host 0.0.0.0
+pip install checkpy
+git checkout git@github.com:tomkooij/io_tests.git (private!)
+git checkout git@github.com:Jelleas/progbeta2017tests
+cp -R blabla tests/
 ```
 
-De admin interface is `/admin`
+In de checkpy docker container:
+  $ ./run_checkpy_docker.sh
+(detach met ctrl-p ctrl-q ;) )
+
+Dit haalt alle opdrachten uit de wachtrij door checkpy.
+De opdrachten draaien de checkpy container: chroot jail, submit folder is
+read-only gemount. Unpriviledged user.
+
+TODO: 
+  - gunicorn (TLS) in plaats van Flask dev server gebruiken
+  - checkpy container beter firewallen
+  - timeout in checkpy (infinite loops) debuggen: lijkt niet te werken

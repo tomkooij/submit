@@ -10,6 +10,9 @@ services:
       MYSQL_USER: tomkooij
       MYSQL_PASSWORD: sokkenlichtkrant
       MYSQL_DATABASE: submit
+    networks:
+      - default_bridge
+      - isolated
     volumes:
       - ./my-data:/var/lib/mysql
 
@@ -18,13 +21,21 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      FOO: bar
+      MYSQLSERVER: db
+      MYSQLSERVERPORT: 3306
     volumes:
       - '.:/base:ro'
     working_dir: '/base' 
     command: '/bin/sh'
     stdin_open: true
     tty: true
+    networks:
+      - isolated
     depends_on: 
       - db
 
+networks:
+  isolated:
+    internal: true
+  default_bridge:
+    driver: bridge

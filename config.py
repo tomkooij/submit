@@ -7,8 +7,8 @@ class Config(object):
     DEBUG = True
     FLASK_DEBUG = True
 
-    MYSQLSERVER = 'htpc.fritz.box' #'127.0.0.1'
-    MYSQLSERVERPORT = 32000 #3206
+    MYSQLSERVER = os.environ.get('MYSQLSERVER', '127.0.0.1')
+    MYSQLSERVERPORT = os.environ.get('MYSQLSERVERPORT', 32000)
     MYSQLDB = 'submit'
     MYSQLUSER = 'root'
     MYSQLPASS = 'rootfoobar'

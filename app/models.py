@@ -19,11 +19,13 @@ opdracht_score = {#naam, score
                 'vierkant': 0,
                 'trapezium': 20,
                 'hoogsteuitkomst': 10,
+                'delers': 20,
                 # A2
                 'klnkrwg': 0,
                 'ceasar': 30,
                 'letterbeeld': 20,
                 'balletjeballetje': 20,
+                'collatz': 20,
              }
 categories = list(opdracht_score.keys())
 
@@ -69,7 +71,7 @@ class User(UserMixin, db.Model):
 
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    submission_filename = db.Column(db.String(30), default=None, nullable=True)
+    submission_filename = db.Column(db.String(130), default=None, nullable=True)
     stored_filename = db.Column(db.String(100), default=None, nullable=True)
     comment = db.Column(db.String(140))
     category = db.Column(db.String(30), default=None, nullable=True)

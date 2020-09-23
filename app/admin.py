@@ -9,6 +9,8 @@ from app.models import User, Submission
 
 class AdminModelView(ModelView):
 
+    column_display_pk = True
+
     def is_accessible(self):
         """only users with is.admin=True should have access to admin
         panel. However, if they somehow get access, block these models

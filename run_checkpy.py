@@ -89,7 +89,7 @@ for sub in subs:
             print(output)
             sub.percentage = percentage
             sub.score = score
-            sub.checkpy_output = output
+            sub.checkpy_output = output[:999]
             sub.nTests = nTests
             sub.nPassed = nPassed
             sub.is_graded = True

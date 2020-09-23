@@ -7,12 +7,8 @@ class Config(object):
     DEBUG = True
     FLASK_DEBUG = True
 
-    # local dhfdgr3xy757eufhfgfAGDSHRjhtr5456653wdvbmWESGnhgtutfhgfd43424tes
-    #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
-
-    # pythonanywhere
-    MYSQLSERVER = '127.0.0.1'
-    MYSQLSERVERPORT = 32000
+    MYSQLSERVER = 'htpc.fritz.box' #'127.0.0.1'
+    MYSQLSERVERPORT = 32000 #3206
     MYSQLDB = 'submit'
     MYSQLUSER = 'root'
     MYSQLPASS = 'rootfoobar'

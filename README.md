@@ -11,7 +11,6 @@ Flask App die eerste op pythonanywhere.com draaide. Draait nu op HTPC.
 Hoe werkt dit?
 --------------
 
-Draai de app met `run_flash.sh`.
 
 Leerlingen leveren opdrachten in. De bestandsnaam bepaald de opdracht,
 zoals `checkpy` dat doet. De bestandsnamen zijn hard-coded in `app/models.py`
@@ -22,15 +21,26 @@ weer opnieuw aan voor `checkpy`)
 
 Opdrachten (`models.Submission`) komen in de wachtrij.
 
-In een screen met de juiste env (`conda activate flask`):
-
-  $ ./run_checkpy
-
-Dit haalt alle opdrachten uit de wachtrij door checkpy.
-
 
 Installatie
+
 -----------
+MySQL en checkpy daaien in Docker containers: `docker-compose up -d`.
+
+Draai de webserver app met `run_flash.sh`. TODO: gunicorn ervoor zetten (TLS).
+
+In de checkpy docker container:
+  $ ./run_checkpy_docker.sh
+(detach met ctrl-p ctrl-q ;) )
+
+Dit haalt alle opdrachten uit de wachtrij door checkpy.
+De opdrachten draaien de checkpy container: chroot jail, submit folder is
+read-only gemount. Unpriviledge user.
+
+TODO: 
+  - checkpy container beter firewallen
+  - timeout in checkpy (infinite loops) debuggen: lijkt niet te werken
+
 
 ```
 conda activate flask

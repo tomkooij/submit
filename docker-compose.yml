@@ -1,4 +1,4 @@
-version: '2'
+version: '3.3'
 
 services:
   db:
@@ -10,6 +10,21 @@ services:
       MYSQL_USER: tomkooij
       MYSQL_PASSWORD: sokkenlichtkrant
       MYSQL_DATABASE: submit
-
     volumes:
       - ./my-data:/var/lib/mysql
+
+  checkpy:
+    image: checkpy
+    build: .
+    restart: unless-stopped
+    environment:
+      FOO: bar
+    volumes:
+      - '.:/base:ro'
+    working_dir: '/base' 
+    command: '/bin/sh'
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - db
+

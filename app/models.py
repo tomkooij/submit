@@ -81,7 +81,7 @@ class Submission(db.Model):
     nTests = db.Column(db.Integer, default=-1)
     nPassed = db.Column(db.Integer, default=-1)
     checkpy_output = db.Column(db.String(1000), default=None, nullable=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 

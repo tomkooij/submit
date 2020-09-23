@@ -49,7 +49,7 @@ xxxx, llnnummber(4cijfers), wachtwoord, Naam, email
 >>> db.session.commit()
 ```
 
-Draai de webserver app met `run_flash.sh`. 
+Draai de webserver app met `run_flash.sh` in een screen. 
 
 Installeer checkpy ook lokaal en installeer tests in ./tests
 (Clone ze van github en kopieer naar `./tests`)
@@ -58,14 +58,17 @@ pip install checkpy
 git checkout git@github.com:tomkooij/io_tests.git (private!)
 git checkout git@github.com:Jelleas/progbeta2017tests
 cp -R blabla tests/
+checkpy -register ./tests
+checkpy testietsomtekijkenofhetwerkt.py
 ```
 
 In de checkpy docker container:
-  $ ./run_checkpy_docker.sh
+
+  `$ ./run_checkpy_docker.sh`
 (detach met ctrl-p ctrl-q ;) )
 
 Dit haalt alle opdrachten uit de wachtrij door checkpy.
-De opdrachten draaien de checkpy container: chroot jail, submit folder is
+De opdrachten draaien in de checkpy container: chroot jail, submit folder is
 read-only gemount. Unpriviledged user.
 
 TODO: 

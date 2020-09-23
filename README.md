@@ -69,9 +69,8 @@ In de checkpy docker container:
 
 Dit haalt alle opdrachten uit de wachtrij door checkpy.
 De opdrachten draaien in de checkpy container: chroot jail, submit folder is
-read-only gemount. Unpriviledged user.
+read-only gemount. Unpriviledged user. Container geen netwerk toegang.
 
 TODO: 
   - gunicorn (TLS) in plaats van Flask dev server gebruiken
-  - checkpy container beter firewallen
   - timeout in checkpy (infinite loops) debuggen: lijkt niet te werken

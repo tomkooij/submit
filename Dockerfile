@@ -4,7 +4,7 @@ FROM frolvlad/alpine-miniconda3
 ENV PATH $PATH:/home/checkpy/.local/bin
 
 RUN /opt/conda/bin/conda install --yes --freeze-installed \
-       numpy nomkl matplotlib \
+       numpy nomkl jupyter matplotlib \
        && /opt/conda/bin/conda clean -afy
 COPY requirements.txt .
 RUN pip install -r requirements.txt

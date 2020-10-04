@@ -25,11 +25,26 @@ Opdrachten (`models.Submission`) komen in de wachtrij.
 Installatie
 -----------
 
- - Verander de MySQL config (root password) en secret in `config.py`
+ - Verander de MySQL config (root password) en secret in `config.py`flas
 
  - MySQL en checkpy draaien in docker, zie `docker-compose.yml`:
  
  $ docker-compose up -d 
+
+Maak de database
+```
+$ docker exec -it CONTAINER /bin/sh
+# mysql -u root -p
+mysql> CREATE DATABASE IF NOT EXISTS submit;
+```
+(let op dat mysql database namen hoofletter gevoelig zijn)
+
+Init db
+```
+flask db init
+flask db migrate
+flask db upgrade
+```
 
 Voeg gebruikers toe:
 

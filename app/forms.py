@@ -17,5 +17,4 @@ class LoginForm(FlaskForm):
 class SubmissionForm(FlaskForm):
     comment = StringField('Comment')
     submission_file = FileField(validators=[FileRequired('Bestand toevoegen is verplicht!'), FileAllowed(pycode, 'Alleen .py en .ipynb toegestaan!')])
-    submission_category = SelectField('Opgave: ', choices=categories, validate_choice=False)
     submit = SubmitField('Submit')

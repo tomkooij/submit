@@ -3,17 +3,10 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-from app import db, login
+from app import db
 
 # this could be a table...
-#categories = ['nulputen', 'plot', 'riemann', 'rekenwonder', 'fit',
-#            'fuzzymatches', 'countmatches', 'goldbach', 'tunnel',
-#            'piramide', 'randomwiskunde', 'levenshtein', 'greedy',
-#            'priemgetal', 'water', 'temperatuur', 'monopoly', 'initials',
-#            'autorit', 'histogram', 'hello', 'basejump', 'montecarlo',
-#            'appel', 'reeks', 'findmatches', 'afstand',
-#            'monopoly_realistisch', 'nulpunten']
-
+"""PO1
 opdracht_score = {#naam, score
                 'rechthoek': 10,
                 'vierkant': 0,
@@ -27,6 +20,52 @@ opdracht_score = {#naam, score
                 'balletjeballetje': 20,
                 'collatz': 20,
              }
+"""
+opdracht_score = {
+             # algoritmen level 1
+             'hello': 0,
+             'water': 0,
+             'piramide': 2,
+             'greedy': 5,
+
+             # getaltheorie
+             'goldbach': 10,
+             'plot': 10,
+             'rekenwonder': 10,
+             'reeks': 10,
+             'priemgetal': 10,
+
+             # beweging
+             'fit': 10,
+             'tunnel': 10,
+
+             # integreren
+             'afstand': 10,
+             'histogram': 10,
+             'montecarlo': 10,
+             'nulpunten': 10,
+             'randomwiskunde': 10,
+             'riemann': 10,
+             'twitter': 20,
+
+             # bigdata
+             'autorit': 20,
+             'temperatuur': 20,
+
+             # dna
+             'fuzzymatches': 10,
+             'countmatches': 10,
+             'findmatches': 10,
+             'levenshtein': 10,
+             'initials': 10,
+
+             # monopoly
+             'basejump': 10,
+             'appel': 10,
+             'monopoly': 10,
+             'monopoly_realistisch': 20,
+            }
+
 categories = list(opdracht_score.keys())
 
 
@@ -83,7 +122,6 @@ class Submission(db.Model):
     checkpy_output = db.Column(db.String(1000), default=None, nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
 
     def __init__(self, filename=None, comment=None, user_id=None, category=categories[0]):
         self.submission_filename = filename

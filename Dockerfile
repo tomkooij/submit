@@ -3,9 +3,9 @@ FROM frolvlad/alpine-miniconda3
 # Hack this should be dynamically set.. 
 ENV PATH $PATH:/home/checkpy/.local/bin
 
-#RUN /opt/conda/bin/conda install --yes --freeze-installed \
-#       numpy nomkl matplotlib \
-#       && /opt/conda/bin/conda clean -afy
+RUN /opt/conda/bin/conda install --yes --freeze-installed \
+       numpy nomkl matplotlib \
+       && /opt/conda/bin/conda clean -afy
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
@@ -21,5 +21,6 @@ RUN export PATH=$PY_USER_BIN:$PATH
 
 # install checkpy in local folder (will write test DB to that folder)
 RUN pip install --user checkpy
-RUN checkpy -register /base/tests
+#RUN checkpy -register /base/tests
+RUN checkpy -d uva/progns
 

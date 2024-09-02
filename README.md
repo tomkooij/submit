@@ -73,8 +73,8 @@ Installeer checkpy ook lokaal en installeer tests in ./tests
 (Clone ze van github en kopieer naar `./tests`)
 ```
 pip install checkpy
-git checkout git@github.com:tomkooij/io_tests.git (private!)
-git checkout git@github.com:Jelleas/progbeta2017tests
+git clone git@github.com:tomkooij/iotests.git (private!)
+git clone git@github.com:Jelleas/progbeta2017tests
 cp -R blabla tests/
 checkpy -register ./tests
 checkpy testietsomtekijkenofhetwerkt.py

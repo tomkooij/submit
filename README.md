@@ -56,6 +56,8 @@ xxxx, llnnummber(4cijfers), wachtwoord, Naam, email
 
 ```python
 >>> from app import db
+>>> from app import app
+>>> app.app_context().push()  # of in flask shell
 >>> from app.models import User
 >>> u = User('tom', 'Tom Kooij', 'foo@foo')
 >>> u.set_password(vulietsin)

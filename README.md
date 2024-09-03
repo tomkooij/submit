@@ -5,7 +5,7 @@ Inlever tooltje voor NLT Inleinding programmeren: github.com:tomkooij/nltprog
 
 Auto-grader: Deze tool haalt ingeleverde opdrachten door checkpy.
 
-Flask App die eerste op pythonanywhere.com draaide. Draait nu op HTPC.
+Flask App die eerste op pythonanywhere.com draaide. Draait nu thuis in VM.
 
 
 Hoe werkt dit?
@@ -24,9 +24,11 @@ Opdrachten (`models.Submission`) komen in de wachtrij.
 
 Installatie
 -----------
-
+ - Maak een Ubuntu VM met proxmox VE helper scripts (Ubuntu 22, 4Gb mem, 2 cores)
+ - Installeer Miniconda
+ - git clone https://www.github.com:tomkooij/dotfiles en zorg dat SSH naar github werkt.
+ - git clone git@github.com:tomkooij/submit     
  - Verander de MySQL config (root password) en secret in `config.py`flas
-
  - MySQL en checkpy draaien in docker, zie `docker-compose.yml`:
  
  $ docker-compose up -d 

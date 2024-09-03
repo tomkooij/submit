@@ -12,6 +12,7 @@ from app import app, db, pycode
 from app.models import User, Submission, categories
 from app.forms import LoginForm, SubmissionForm
 
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024   # 50 Kb limit
 
 def best_submissions(user):
     """return a list of the best submissions per category for a user"""

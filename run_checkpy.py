@@ -3,7 +3,7 @@ import json
 import re
 import os, shutil, tempfile
 
-from app import db
+from app import app, db
 from app.models import User, Submission, opdracht_score
 
 
@@ -43,6 +43,8 @@ def get_ungraded_submissions():
         print('Error: ', remove_ansi_escape(results['output'][0]))
 
 
+app.app_context().push()
+
 subs = get_ungraded_submissions()
 
 print(15*'#')
@@ -67,6 +69,8 @@ for sub in subs:
             checkpy_result = run_checkpy(tmpdirname, sub.category)
             try:
                 results = json.loads(checkpy_result.decode())
+                if isinstance(results, list):
+                    results = results[0]
                 nTests = results['nRun']  # the number of actual tests
                 nPassed = results['nPassed']
                 output = remove_ansi_escape('\n'.join(results['output']))

@@ -2,7 +2,10 @@ from flask import flash, render_template, request, redirect, url_for, send_from_
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_uploads import UploadNotAllowed
 
-from werkzeug.urls import url_parse
+#from werkzeug.urls import url_parse
+from urllib.parse import urlparse
+
+
 from werkzeug.utils import secure_filename
 
 from app import app, db, pycode
@@ -144,7 +147,7 @@ def login():
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
+        if not next_page or urlparse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)

@@ -17,7 +17,9 @@
           aantal juist: {{submission.nPassed}}
           <br>
           Checkpy output:
-          {{ submission.checkpy_output | nl2br }}
+            <pre>
+            {{ submission.checkpy_output }}
+            </pre>
       {%endif %}
       </p></div>
       <hr>

@@ -94,6 +94,7 @@ read-only gemount. Unpriviledged user. Container geen netwerk toegang.
 
 TODO: 
   - timeout in checkpy (infinite loops) debuggen: lijkt niet te werken. (Het werkt soms).
+  - Stupid bug: checkpy draait buiten conda env, dus: `/usr/bin/python3 -m pip install matplotlib` is nodig, ook in de container.
 
 Cloudflare setup:
   - Maak een proxied DNS record "submit.tomkooij.ln" in cloudflare dashboard
